@@ -256,7 +256,7 @@ curl -X GET "http://127.0.0.1:5000/clientes/?nome=fulano"
 ## Solução de Problemas (Troubleshooting)
 Para entender como resolver possíveis problemas, leia o arquivo:
 
-- Troubleshooting 🛠️
+- [Troubleshooting](https://github.com/xssrae/desafio-tecnico/blob/main/TROUBLESHOOTING.md) 🛠️
 ---
 
 ## 🔮 Melhorias Futuras (Roadmap)
