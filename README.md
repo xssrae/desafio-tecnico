@@ -1,4 +1,4 @@
-# 🧩 API de Cadastro de Clientes
+# API de Cadastro de Clientes
 
 API simples desenvolvida como parte de um **teste técnico para a posição de Analista de Engenharia de TI Júnior**.
 A aplicação permite **cadastrar, listar e consultar clientes**, com persistência de dados em um banco de dados **PostgreSQL**.
