@@ -1,0 +1,1 @@
+from app.controller.cliente_controller import cliente_bp

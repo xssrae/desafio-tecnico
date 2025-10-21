@@ -1,0 +1,12 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+python-dotenv
+flasgger
+waitress
+psycopg2-binary
+pytest
+pytest-flask
+pytest-cov
+gunicorn
