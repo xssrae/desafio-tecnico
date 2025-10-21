@@ -27,73 +27,101 @@ Antes de iniciar, certifique-se de ter instalado:
 
 ## 🚀 Como Executar o Projeto
 
-1. **Clone o repositório:**
+### 1. **Clone o repositório:**
 
-   ```bash
-   git clone https://github.com/xssrae/desafio-tecnico-itau
-   cd api-clientes
-   ```
+```bash
+git clone https://github.com/xssrae/desafio-tecnico
+cd api-clientes
+```
 
-2. **(Opcional, mas recomendado) Crie e ative um ambiente virtual:**
+### 2. **Crie e ative um ambiente virtual:**
 
-  - Mac ou Linux
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # No Windows: venv\Scripts\activate
-   ```
-   
-  - Windows
-   ```bash
-   python -m venv venv
-   .venv\Scripts\activate
-   ```
+- Mac ou Linux
+```bash
+# Cria o ambiente virtual
+python -m venv venv
 
-3. **Instale as dependências:**
+# Ativa o ambiente
+.\venv\Scripts\Activate
+```
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+- Windows
+```powershell
+# Cria o ambiente virtual
+python -m venv venv
+# Ativa o ambiente
+.\venv\Scripts\Activate
+```
+  > ⚠️ Atenção: Caso renomeie a pasta do projeto, exclua e recrie o venv após a mudança. Ambientes virtuais quebram quando a pasta raiz é renomeada.
 
-4. **Inicie o container do banco de dados com o Docker Compose:**
+### 3. Crie o arquivo de configuração `.env`
 
-   ```bash
-   docker-compose up -d
-   ```
+Crie um arquivo chamado .env na raiz do projeto e adicione o seguinte conteúdo:
 
-5. **Crie um arquivo `.env` na raiz do projeto** com o conteúdo abaixo, configurando a conexão com o banco:
+```ini
+# ==================================
+# Configuração do Docker (para criar o banco)
+# ==================================
+POSTGRES_USER={USER}
+POSTGRES_PASSWORD={SENHA}
+POSTGRES_DB=clientes_db
 
-   ```ini
-   DATABASE_URL="postgresql://admin:admin@localhost:5432/clientes_db"
-   ```
+# ==================================
+# Configuração do Flask (para conexão com o DB)
+# ==================================
+DATABASE_URL="postgresql://admin:9928@localhost:5433/clientes_db"
 
-6. **Defina as variáveis de ambiente do Flask**
-   (assumindo que o arquivo principal seja `app.py` ou `main.py`):
+# ==================================
+# Configuração do Servidor Flask
+# ==================================
+FLASK_APP=run.py
+FLASK_DEBUG=1
+FLASK_RUN_PORT=5000
+FLASK_RUN_HOST=0.0.0.0
+```
 
-   * **Linux/macOS:**
+### 4. **Instale as dependências:**
 
-     ```bash
-     export FLASK_APP=app.main
-     export FLASK_ENV=development  # (Opcional)
-     ```
+```bash
+# (Opcional) Atualize o pip
+python -m pip install --upgrade pip
 
-   * **Windows (CMD):**
+# Instale as dependências do projeto
+pip install -r requirements.txt
+```
 
-     ```bash
-     set FLASK_APP=app.main
-     set FLASK_ENV=development
-     ```
+### 5. **Inicie o container do banco de dados com o Docker Compose:**
 
-7. **Execute a aplicação:**
+```bash
+docker-compose up -d
+```
 
-   ```bash
-   flask run --reload
-   ```
+### 6. Aplique as migrações do banco de dados:
 
-8. A API estará disponível em:
-   👉 `http://127.0.0.1:5000`
+Com o container do PostgreSQL em execução, crie as tabelas do banco com o Flask-Migrate:
+```bash
+# Inicializa a pasta de migrações (somente na primeira vez)
+flask db init
 
-9. A documentação interativa (Swagger UI via Flasgger) estará em:
-   👉 `http://127.0.0.1:5000/apidocs/`
+# Cria as tabelas
+flask db upgrade
+```
+Caso altere os modelos, gere uma nova migração com:
+```bash
+flask db migrate -m "Descrição da migração"
+```
+
+### 7. Execute a aplicação Flask:
+
+```bash
+flask run
+```
+
+### A API estará disponível em:
+👉 `http://127.0.0.1:5000`
+
+### A documentação interativa (Swagger UI via Flasgger) estará em:
+👉 `http://127.0.0.1:5000/apidocs/`
 
 ---
 
@@ -104,7 +132,6 @@ Com o ambiente configurado e as dependências instaladas, execute o comando abai
 ```bash
 pytest
 ```
-
 ---
 
 ## 📚 Documentação dos Endpoints
@@ -225,6 +252,11 @@ curl -X GET http://127.0.0.1:5000/clientes/1
 curl -X GET "http://127.0.0.1:5000/clientes/?nome=fulano"
 ```
 
+---
+## Solução de Problemas (Troubleshooting)
+Para entender como resolver possíveis problemas, leia o arquivo:
+
+- Troubleshooting 🛠️
 ---
 
 ## 🔮 Melhorias Futuras (Roadmap)

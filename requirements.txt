@@ -10,3 +10,5 @@ pytest
 pytest-flask
 pytest-cov
 gunicorn
+pydantic[email]
+pydantic

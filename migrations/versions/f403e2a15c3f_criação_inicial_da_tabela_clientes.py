@@ -1,8 +1,8 @@
-"""Cria a tabela inicial de clientes
+"""Criação inicial da tabela clientes
 
-Revision ID: 50b7b7c84064
-Revises: 2bff06478ebf
-Create Date: 2025-10-19 01:46:42.537811
+Revision ID: f403e2a15c3f
+Revises: 
+Create Date: 2025-10-21 19:12:53.586396
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '50b7b7c84064'
-down_revision = '2bff06478ebf'
+revision = 'f403e2a15c3f'
+down_revision = None
 branch_labels = None
 depends_on = None
 

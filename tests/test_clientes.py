@@ -20,6 +20,7 @@ def test_app():
         pass 
     
     yield app
+    
     os.close(db_fd)
     os.unlink(db_path)
 
@@ -184,16 +185,17 @@ def test_adicionar_cliente_campo_email_vazio(test_client, init_database):    # P
 
 def test_atualizar_cliente_sucesso(test_client, init_database): # PUT - Sucesso
     updated_data = {
-        "cpf": "111", 
-        "nome": "Joao Pereira",
-        "email": "joao.pereira@test.com", 
+        "cpf": "111", # Mesmo CPF
+        "nome": "Joao Pereira", # Nome alterado
+        "email": "joao.pereira@test.com", # Email alterado
         "telefone": "999999",
         "agencia": "0002",
         "conta": "10",
         "tipo_conta": "C",
         "cartao_debito": "10"
     }
-    response = test_client.put("/clientes/111", json=updated_data)
+    # --- CORREÇÃO: Usar ID=1 na URL ---
+    response = test_client.put("/clientes/1", json=updated_data)
     assert response.status_code == 200
     json_data = response.get_json()
     assert json_data["success"] == True
@@ -207,7 +209,7 @@ def test_atualizar_cliente_sucesso(test_client, init_database): # PUT - Sucesso
 
 def test_atualizar_cliente_nao_encontrado(test_client, init_database):  # PUT - Cliente não encontrado
     updated_data = {
-        "cpf": "999", 
+        "cpf": "999", # CPF inexistente
         "nome": "Carlos Souza",
         "email": "carlos@souza.com",
         "telefone": "888888",
@@ -216,6 +218,7 @@ def test_atualizar_cliente_nao_encontrado(test_client, init_database):  # PUT - 
         "tipo_conta": "C",
         "cartao_debito": "11"
     }
+    # --- CORREÇÃO: Usar ID=999 na URL ---
     response = test_client.put("/clientes/999", json=updated_data)
     assert response.status_code == 404
     json_data = response.get_json()
@@ -224,16 +227,17 @@ def test_atualizar_cliente_nao_encontrado(test_client, init_database):  # PUT - 
 
 def test_atualizar_cliente_campo_nome_vazio(test_client, init_database): # PUT - Nome vazio
     updated_data = {
-        "cpf": "222", 
-        "email": "beltrano@test.com", 
-        "nome": "", 
+        "cpf": "222", # CPF do cliente 2
+        "email": "beltrano@test.com", # Email válido
+        "nome": "", # Nome inválido
         "telefone": "777777",
         "agencia": "0004",
         "conta": "12",
         "tipo_conta": "C",
         "cartao_debito": "12"
     }
-    response = test_client.put("/clientes/222", json=updated_data)
+    # --- CORREÇÃO: Usar ID=2 na URL ---
+    response = test_client.put("/clientes/2", json=updated_data)
     assert response.status_code == 400
     json_data = response.get_json()
     assert json_data["success"] == False
@@ -241,28 +245,30 @@ def test_atualizar_cliente_campo_nome_vazio(test_client, init_database): # PUT -
 
 def test_atualizar_cliente_campo_email_vazio(test_client, init_database):    # PUT - Email vazio
     updated_data = {
-        "cpf": "333", 
+        "cpf": "333", # CPF do cliente 3
         "nome": "Maria Oliveira",
-        "email": "", 
+        "email": "", # Email inválido
         "telefone": "888888",
         "agencia": "0005",
         "conta": "13",
         "tipo_conta": "C",
         "cartao_debito": "13"
     }
-    response = test_client.put("/clientes/333", json=updated_data)
+    # --- CORREÇÃO: Usar ID=3 na URL ---
+    response = test_client.put("/clientes/3", json=updated_data)
     assert response.status_code == 400
     json_data = response.get_json()
     assert json_data["success"] == False
     assert "Dados inválidos" in json_data["message"]
 
 def test_deletar_cliente_sucesso(test_client, init_database): # DELETE - Sucesso
+    # Cliente c1 tem ID=1
     response = test_client.delete("/clientes/1") 
     assert response.status_code == 200
     json_data = response.get_json()
     assert json_data["success"] == True
     assert "Cliente deletado com sucesso" in json_data["message"]
-    assert json_data["data"]["cpf"] == "111" # Verificar se é o cliente certo
+    assert json_data["data"]["cpf"] == "111" 
     assert json_data["data"]["nome"] == "Joao da Silva"
 
 
