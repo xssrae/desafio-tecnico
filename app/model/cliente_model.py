@@ -1,12 +1,7 @@
-from pydantic import BaseModel, EmailStr, ConfigDict, constr
+from pydantic import BaseModel, EmailStr, ConfigDict, constr, field_validator
 from typing import Optional
 
 class ClienteCreate(BaseModel):
-    """
-    Modelo para criação de cliente.
-    cpf, nome, e email são obrigatórios.
-    constr(min_length=1) garante que a string não pode ser vazia.
-    """
     cpf: constr(strip_whitespace=True, min_length=1)
     nome: constr(strip_whitespace=True, min_length=1)
     email: EmailStr 
@@ -20,14 +15,21 @@ class ClienteCreate(BaseModel):
     cartao_credito: Optional[str] = None
     bandeira_cartao_credito: Optional[str] = None
 
+    @field_validator('email')
+    @classmethod
+    def check_email_not_empty_string(cls, v: str) -> str:
+        
+        if v == "":
+            # Esta mensagem será incluída nos 'errors' do ValidationError
+            raise ValueError("O campo 'email' não pode ser vazio")
+        # Se não for vazio, permite que a validação EmailStr continue
+        return v
+
 class Cliente(BaseModel):
-    """
-    Modelo para serialização de saída (respostas da API).
-    """
     id: int
-    cpf: str = None
+    cpf: str 
     nome: str
-    email: EmailStr = None
+    email: EmailStr
     telefone: str = None
     agencia: str = None
     conta: str = None

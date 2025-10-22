@@ -152,7 +152,7 @@ def atualizar_cliente(id: int):
     except ValidationError as e:
         return jsonify({
             "success": False,
-            "message": "Dados inválidos",
+            "message": "Dados inválidos. Verifique os campos enviados.",
             "errors": e.errors()
         }), 400
     
